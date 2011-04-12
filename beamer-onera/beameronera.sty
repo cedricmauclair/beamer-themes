@@ -1,0 +1,9 @@
+\ProvidesPackage{beameronera}[2011/04/11 Beamer theme: color and logo.]
+
+\RequirePackage{graphicx}
+
+\titlegraphic{\vfill\includegraphics[height=10mm]{logo-onera}}
+
+% \definecolor{onera}{cmyk}{0.91,0.60,0,0}% do not work with tikz (only rgb)
+\definecolor{onera}{RGB}{47,99,183}% same as 91% cyan + 60% magenta
+\setbeamercolor{structure}{fg=onera}

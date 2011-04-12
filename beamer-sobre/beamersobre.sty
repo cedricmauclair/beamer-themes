@@ -1,0 +1,289 @@
+\ProvidesPackage{beamersobre}[2011/04/11 Beamer theme.]
+
+\RequirePackage{xifthen, tikz}
+
+\newcount\sobre@angcur
+\newcount\sobre@angtot \sobre@angtot360
+\newcount\sobre@framecnt
+\newcount\sobre@frametot
+
+\newlength\sobre@rulethickness
+
+\usebeamerfont{normal text}
+\setbox0=\hbox{\strut}
+\newlength\strutht \strutht\ht0
+\newlength\strutdp \strutdp\dp0
+
+\def\num(#1){\numexpr#1\relax}
+\def\dim(#1){\dimexpr#1\relax}
+
+
+\AtBeginDocument{
+  \pgfdeclaremask{sobre}{backgroundmask.jpg}
+  \pgfdeclareimage
+    [mask=sobre, width=\paperwidth, height=\paperheight]
+    {pagebackground}{background.jpg}
+  \pgfdeclareverticalshading{sobre@shading}
+  \paperwidth{
+    color(0mm)=(gray!40);
+    color(6mm)=(gray!20);
+    color(12mm)=(bg);
+    color(\paperheight-55mm)=(bg);
+    color(\paperheight-30mm)=(palette secondary!40);
+    color(\paperheight)=(palette primary!90)}
+}
+
+\setbeamersize{text margin left=5pt, text margin right=5pt}
+\setbeamertemplate{background canvas}{%
+  \pgfuseshading{sobre@shading}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node at (current page.center)
+      {\pgfuseimage{pagebackground}};
+  \end{tikzpicture}}
+\setbeamertemplate{blocks}[rounded]
+\setbeamertemplate{navigation symbols}{}
+
+
+%<< ~~[· title page   ·]~~ >>
+
+\setbeamercolor{sobre@subsubtitlecolor}{use=structure,fg=structure.fg,bg=structure.bg}
+\setbeamertemplate{title page}{%
+  \vskip3\bigskipamount
+  \begin{beamercolorbox} [wd=\paperwidth, center, vmode] {}
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}
+    \ifx\insertsubtitle\@empty\else
+      {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}
+    \fi
+    \ifx\insertinstitute\@empty\else
+      \vskip2\bigskipamount
+      \usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute
+    \fi
+  \end{beamercolorbox}
+
+  \vskip4\bigskipamount
+  \vfill
+  \begin{beamercolorbox} [right, wd=.95\textwidth] {}
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}
+    {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}
+  \end{beamercolorbox}}
+
+%>>
+%<< ~~[· frametitle   ·]~~ >>
+
+\setbeamertemplate{frametitle}{%
+  \vskip-.6ex
+  \begin{beamercolorbox} [wd=\textwidth] {frametitle}
+    \usebeamerfont{frametitle}\strut\insertframetitle
+  \end{beamercolorbox}
+  \ifx\insertframesubtitle\@empty\else
+    \vskip-.8ex
+    \begin{beamercolorbox} [wd=\textwidth] {framesubtitle}
+      \usebeamerfont{framesubtitle}\strut\insertframesubtitle
+    \end{beamercolorbox}
+  \fi}
+
+%>>
+%<< ~~[· side bar     ·]~~ >>
+
+\userightsidebartemplate{0pt}{}% gets rid of the lower logo
+
+%>>
+%<< ~~[· headline     ·]~~ >>
+
+\setbeamertemplate{headline}{%
+  \begin{beamercolorbox}
+    [wd=\textwidth, ht=\strutht, dp=\strutdp, ignorebg=true,
+     leftskip=\beamer@leftmargin, rightskip=\beamer@rightmargin] {headline}
+    \ifnum\insertframenumber=1
+    \else
+      \insertsectionnavigationhorizontal{\dim(\hsize-\leftskip-\rightskip)}
+        {\hskip-.3cm}{\hskip-.3cm}% remove space inserted by beamer
+    \fi
+  \end{beamercolorbox}}
+
+%>>
+%<< ~~[· footline     ·]~~ >>
+
+\newcount\sobre@angcur
+\newcount\sobre@angtot \sobre@angtot360
+
+\newcount\sobre@framecnt
+\newcount\sobre@frametot
+
+\setbeamertemplate{footline}{%
+  \ifnum\insertframenumber=1
+  \else
+    \sobre@framecnt=\num(\insertframenumber-1)
+    \sobre@frametot=\num(\inserttotalframenumber-1)
+    \sobre@angcur=\num(\sobre@angtot*\sobre@framecnt/\sobre@frametot)
+    \begin{beamercolorbox}
+      [wd=\textwidth,
+       ht=\strutht, dp=\strutdp, ignorebg=true,
+       leftskip=\beamer@leftmargin, rightskip=\beamer@rightmargin] {footline}
+      \rlap{\insertlogo
+            \hskip\beamer@leftmargin\insertshortauthor
+            \ifx\insertinstitute\@empty\else, \insertshortinstitute\fi}
+      \hfill\hfill\hbox{\insertshorttitle}\hfill
+      \llap{%
+        \the\sobre@framecnt/\the\sobre@frametot\space
+        \begin{tikzpicture}
+          \useasboundingbox (0,0) circle (1ex);
+          \path [fill=bluedark, rotate=90-\sobre@angcur]
+            (0,0) -- (1ex,0ex) arc (0:\sobre@angcur:1ex);
+        \end{tikzpicture}}
+    \end{beamercolorbox}
+  \fi}
+
+%>>
+%<< ~~[· itemize      ·]~~ >>
+
+\def\sobre@squarebullet#1{%
+  \begin{tikzpicture}[scale=.035ex]
+    \path [draw=#1, line width=.3mm] (0,0) rectangle ++(1,1);
+  \end{tikzpicture}}
+
+\def\sobrebulletcolors#1#2#3{%
+  \def\sobre@bulletcoli{#1}
+  \def\sobre@bulletcolii{#2}
+  \def\sobre@bulletcoliii{#3}}
+
+\sobrebulletcolors{bluedark}{bluemedium}{bluelight}
+
+\defbeamertemplate*{itemize item}{sobre}{%
+  \usebeamerfont{itemize item}\sobre@squarebullet{\sobre@bulletcoli}}
+
+\defbeamertemplate*{itemize subitem}{sobre}{%
+  \usebeamerfont{itemize subitem}\sobre@squarebullet{\sobre@bulletcolii}}
+
+\defbeamertemplate*{itemize subsubitem}{sobre}{%
+  \usebeamerfont{itemize subsubitem}\sobre@squarebullets{\sobre@bulletcoliii}}
+
+%>>
+%<< ~~[· bibliography ·]~~ >>
+
+\setbeamertemplate{bibliography item}{%
+  \begin{tikzpicture}[rounded corners=1pt, x=9mm, y=9mm]
+    \useasboundingbox (0, 0.2) rectangle (0.5, 0.7);
+    \path [fill=bg!85!blue]
+      (0, 0.25) rectangle (0.4, 0.5);
+    \path [shade, bottom color=bg, top color=bg!85!blue]
+      (0, 0) -- (0.3, 0) -- (0.4, 0.12) -- (0.4, 0.3) -- (0, 0.3) -- cycle;
+    \path [shade, left color=bg, right color=bg!85!blue]
+      (0,0.27) .. controls (0.25,0.25) .. (0.4,0.5) -- (0,0.5) -- cycle;
+    \path [fill=bg!90!blue]
+      (0,0) rectangle (0.3,0.05);
+    \path [shade, left color=bg!95!blue, right color=bg!90!blue]
+      (0,0) rectangle (0.05,0.5);
+    \path [shade, left color=bg,right color=bg!80!black, shading angle=45]
+      (0.3,0) -- (0.3,0.12) -- (0.4,0.12) -- cycle;
+    \path [draw=fg!35!bg]
+      (0,0) -- (0.3,0) -- (0.4,0.12) -- (0.4,0.5) -- (0,0.5) -- cycle;
+    \path [draw=fg!35!bg]
+      (0.3,0) -- (0.3,0.12) -- (0.4,0.12);
+  \end{tikzpicture}}
+
+%>>
+%<< ~~[· blocks       ·]~~ >>
+
+\newcommand\defblock[1][]{%
+  \edef\doit{%
+    \noexpand\dodefblock
+    {block \ifx#1\@empty\else#1\space\fi begin}
+    {block \ifx#1\@empty\else#1\space\fi end}
+    {block title\ifx#1\@empty\else\space#1\fi}
+    {block body\ifx#1\@empty\else\space#1\fi}}
+  \doit}
+
+\def\dodefblock#1#2#3#4{%
+  \setbeamertemplate{#1}{%
+    \@tempdima=\dim(\textwidth-2\beamer@leftmargin-2\beamer@rightmargin)
+    \hbox to \textwidth\bgroup\hfil
+      \begin{beamerboxesrounded}
+        [upper=#3, lower=#4, width=\@tempdima]
+        {\usebeamerfont{#3}\insertblocktitle}
+        \usebeamerfont{#4}}
+  \setbeamertemplate{#2}{%
+      \end{beamerboxesrounded}%
+    \hfil\egroup\vskip1ex}}
+
+%>>
+
+\defblock
+\defblock[example]
+\defblock[alerted]
+
+%<< ~~[· macros     ·]~~ >>
+
+\let\bibliographyorig\bibliography
+\def\bibliography#1{%
+  \begin{center}
+    \begin{tikzpicture}
+      \usebeamercolor{bibliography structure}
+      \node [draw=fg!30!bg, fill=bg, rounded corners=2pt]
+        {\parbox{0.95\textwidth}{\bibliographyorig{#1}\vskip2mm}};
+    \end{tikzpicture}
+  \end{center}}
+
+\def\sobrerulethickness{\setlength\sobre@rulethickness}
+
+%>>
+%<< ~~[· fonts      ·]~~ >>
+
+\usefonttheme{default}
+\renewcommand{\emph}[1]{\textcolor{structure.fg}{\bfseries#1}}
+
+\setbeamerfont{title}{size=\Large,series=\bfseries,parent=structure}
+\setbeamerfont{subtitle}{size=\normalsize, shape=\itshape, parent=title}
+\setbeamerfont{author}{size=\small, series=\bfseries}
+\setbeamerfont{date}{size=\tiny, series=\bfseries}
+
+\setbeamerfont{frametitle}{parent=structure, size=\large, series=\bfseries}
+\setbeamerfont{framesubtitle}{parent=frametitle, size=\footnotesize, shape=\itshape}
+
+\setbeamerfont{block title}{size=\normalsize, series=\bfseries, parent={structure,block body}}
+\setbeamerfont{block body}{}
+\setbeamerfont{block title alerted}{parent={block title,alerted text}}
+\setbeamerfont{block body alerted}{}
+\setbeamerfont{block title example}{parent={block title,example text}}
+\setbeamerfont{block body example}{}
+
+%>>
+%<< ~~[· colors     ·]~~ >>
+
+\definecolor{bluelight}{RGB}{153, 204, 255}
+\definecolor{bluemedium}{RGB}{122,163, 204}
+\definecolor{bluedark}{RGB}{91, 121, 152}
+\definecolor{darkred}{rgb}{.6,0,0}
+\definecolor{bibstruct}{rgb}{.95,.95,.85}
+
+\colorlet{palette primary}{bluedark}
+\colorlet{palette secondary}{bluemedium}
+\colorlet{palette tertiary}{bluelight}
+
+\setbeamercolor{palette primary}{bluedark}
+\setbeamercolor{palette secondary}{bluemedium}
+\setbeamercolor{palette tertiary}{bluelight}
+
+\setbeamercolor{normal text}{fg=gray!40!black, bg=gray!5}
+\setbeamercolor{alerted text}{fg=darkred, bg=darkred!20}
+\setbeamercolor{example text}{fg=green!50!black, bg=green!50!black!20}
+
+\setbeamercolor{structure}{fg=bluedark}
+
+\setbeamercolor{subtitle}{fg=bluemedium}
+\setbeamercolor{author}{}
+\setbeamercolor{date}{}
+
+\setbeamercolor{frametitle}{fg=white}
+
+\setbeamercolor{block title}{fg=structure, bg=structure!80!gray!20}
+\setbeamercolor{block body}{fg=normal text.fg, bg=structure!80!gray!20}
+\setbeamercolor{block title alerted}{fg=darkred, bg=darkred!80!gray!20}
+\setbeamercolor{block body alerted}{fg=normal text.fg, bg=darkred!80!gray!20}
+\setbeamercolor{block title example}{fg=green!50!black, bg=green!60!gray!20}
+\setbeamercolor{block body example}{fg=normal text.fg, bg=green!60!gray!20}
+
+\setbeamercolor{section in head/foot}{fg=white, bg=gray}
+\setbeamercolor{bibliography structure}{fg=normal text.fg, bg=bibstruct}
+
+%>>

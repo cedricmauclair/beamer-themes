@@ -1,0 +1,314 @@
+\documentclass[handout]{beamer}
+
+%<< TODO >>
+% \usetikzlibrary{lindenmayersystems}
+
+% %% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \setbeamertemplate{navigation symbols}{}
+% \useinnertheme{default}
+% \usefonttheme{structuresmallcapsserif}
+% % \useoutertheme[subsection=false,footline=authortitle]{miniframes}
+
+% \setbeamerfont{alerted text}{series=\bfseries}
+% \setbeamerfont{structure}{series=\bfseries}
+% \setbeamerfont{section in head/foot}{series=\bfseries}
+
+% \setbeamertemplate{section in head/foot shaded}{\mdseries\hfill\color{fg!30!bg}\insertsectionhead}
+
+% % \usesectionheadtemplate{\hfill\bfseries\insertsectionhead}{\hfill\color{fg!30!bg}\insertsectionhead}
+
+% \setbeamercolor*{section in head/foot shaded}{fg=white}
+
+% \setbeamercolor*{lower separation line head}{bg=DeepSkyBlue4}
+% \setbeamercolor*{upper separation line foot}{bg=DeepSkyBlue4}
+% \setbeamercolor*{author in head/foot}{parent=normal text}
+% \setbeamercolor*{normal text}{fg=black,bg=white}
+% \setbeamercolor*{alerted text}{fg=DeepSkyBlue4}
+% \setbeamercolor*{example text}{fg=black}
+% \setbeamercolor*{structure}{fg=DeepSkyBlue4}
+
+% \setbeamercolor*{palette tertiary}{fg=black,bg=black!10}
+% \setbeamercolor*{palette quaternary}{fg=black,bg=black!10}
+
+% \makeatletter
+% % === Some definitions we need for each slide (to make the clock work)
+% \newcount\sobre@subframestartpage
+% \newcount\sobre@subframenumber
+% \newcount\sobre@subtotalframenumber
+% \newcount\sobre@subprogressangle
+% \newcount\sobre@progressangle
+% \newcount\sobre@tmpresult
+% \newcount\sobre@framenumber
+% \newcount\sobre@totalframenumber
+
+% \sobre@progressangle=360 % (in degrees)
+% \sobre@subprogressangle=360
+
+% \defbeamertemplate{headline}{texte}
+% {%
+%   \sobre@framenumber=\insertframenumber
+%   \sobre@totalframenumber=\inserttotalframenumber
+
+%   \sobre@subframestartpage=\insertframestartpage
+%   \sobre@subframenumber=\insertpagenumber
+%   \advance\sobre@subframenumber by 1
+%   \advance\sobre@subframenumber by -\sobre@subframestartpage
+%   \sobre@subtotalframenumber=\insertframeendpage
+%   \advance\sobre@subtotalframenumber by 1
+%   \advance\sobre@subtotalframenumber by -\sobre@subframestartpage
+
+%   \sobre@tmpresult=\sobre@progressangle
+%   \multiply\sobre@tmpresult by \sobre@framenumber
+%   \divide\sobre@tmpresult by \sobre@totalframenumber
+%   \sobre@progressangle=\sobre@tmpresult
+
+%   \sobre@tmpresult=\sobre@subprogressangle
+%   \multiply\sobre@tmpresult by \sobre@subframenumber
+%   \divide\sobre@tmpresult by \sobre@subtotalframenumber
+%   \sobre@subprogressangle=\sobre@tmpresult
+
+%   \begin{beamercolorbox}{section in head/foot}
+%       \vskip2pt%
+%       \insertnavigation{\paperwidth}
+%       \vskip2pt%
+%   \end{beamercolorbox}%
+%   \begin{beamercolorbox}[colsep=1pt]{lower separation line head}
+%   \end{beamercolorbox}
+% }
+
+% \defbeamertemplate{headline}{cercles}
+% {%
+%   \sobre@framenumber=\insertframenumber
+%   \sobre@totalframenumber=\inserttotalframenumber
+
+%   \sobre@subframestartpage=\insertframestartpage
+%   \sobre@subframenumber=\insertpagenumber
+%   \advance\sobre@subframenumber by 1
+%   \advance\sobre@subframenumber by -\sobre@subframestartpage
+%   \sobre@subtotalframenumber=\insertframeendpage
+%   \advance\sobre@subtotalframenumber by 1
+%   \advance\sobre@subtotalframenumber by -\sobre@subframestartpage
+
+%   \sobre@tmpresult=\sobre@progressangle
+%   \multiply\sobre@tmpresult by \sobre@framenumber
+%   \divide\sobre@tmpresult by \sobre@totalframenumber
+%   \sobre@progressangle=\sobre@tmpresult
+
+%   \sobre@tmpresult=\sobre@subprogressangle
+%   \multiply\sobre@tmpresult by \sobre@subframenumber
+%   \divide\sobre@tmpresult by \sobre@subtotalframenumber
+%   \sobre@subprogressangle=\sobre@tmpresult
+
+%   \begin{beamercolorbox}{section in head/foot}
+%       \vskip2pt%
+%       \leavevmode
+%       \insertnavigation{.95\paperwidth}%
+%       \ifnum\insertframenumber=1\else%
+%       \ifnum\sobre@subtotalframenumber=1\else%
+%       \begin{tikzpicture}[overlay,xshift=3ex,yshift=.5ex]%
+%           \useasboundingbox (0,0) circle (1ex);%
+%           \fill [DeepSkyBlue4!60,rotate=90-\sobre@subprogressangle] (0,0) --%
+%           (1.4ex,0ex) arc (0:\sobre@subprogressangle:1.4ex);%
+%           \fill [black!10,rotate=90-\sobre@subprogressangle] (0,0) --%
+%           (1ex,0ex) arc (0:\sobre@subprogressangle:1ex);%
+%       \end{tikzpicture}%
+%       \fi%
+%       \begin{tikzpicture}[overlay,xshift=3ex,yshift=.5ex]%
+%           \useasboundingbox (0,0) circle (1ex);%
+%           \fill [DeepSkyBlue4,rotate=90-\sobre@progressangle] (0,0) --%
+%           (1ex,0ex) arc (0:\sobre@progressangle:1ex);%
+%       \end{tikzpicture}%
+%       \fi%
+%       \vskip2pt%
+%   \end{beamercolorbox}%
+%   \begin{beamercolorbox}[colsep=1pt]{lower separation line head}
+%   \end{beamercolorbox}
+% }
+
+
+% \defbeamertemplate*{footline}{sobre}
+% {%
+%   \begin{beamercolorbox}[colsep=.5pt]{upper separation line foot}
+%   \end{beamercolorbox}
+%   \leavevmode
+%   \begin{beamercolorbox}[wd=.10\textwidth,ht=3ex,dp=1.50ex,%
+%       leftskip=.3cm]{title in head/foot}
+%       \pgfuseimage{logo}
+%   \end{beamercolorbox}\begin{beamercolorbox}[wd=.90\textwidth,ht=3ex,%
+%       dp=1.50ex,leftskip=.3cm,rightskip=.3cm plus1fil]%
+%       {title in head/foot}%
+%       {\usebeamerfont{title in head/foot}\insertshorttitle}%
+%       \hfill%
+%       {\usebeamerfont{author in head/foot}\usebeamercolor[fg]{author in%
+%           head/foot}\insertshortauthor}%
+%   \end{beamercolorbox}%
+% }
+
+
+% \defbeamertemplatealias{frametitle}{cercles}{default}
+
+% % Petite redéfinition du thème 'default' pour afficher le slide courant sur le
+% % nombre de slides le cas échéant (1 frame = plusieurs slides en général)
+% \defbeamertemplate{frametitle}{texte}[1][left]
+% {
+%   \sobre@subframestartpage=\insertframestartpage
+%   \sobre@subframenumber=\insertpagenumber
+%   \advance\sobre@subframenumber by 1
+%   \advance\sobre@subframenumber by -\sobre@subframestartpage
+%   \sobre@subtotalframenumber=\insertframeendpage
+%   \advance\sobre@subtotalframenumber by 1
+%   \advance\sobre@subtotalframenumber by -\sobre@subframestartpage
+
+%   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+%   \@tempdima=\textwidth%
+%   \advance\@tempdima by\beamer@leftmargin%
+%   \advance\@tempdima by\beamer@rightmargin%
+%   \begin{beamercolorbox}[sep=0.3cm,#1,wd=\the\@tempdima]{frametitle}
+%       \usebeamerfont{frametitle}%
+%       \vbox{}\vskip-1ex%
+%       \if@tempswa\else\csname beamer@fte#1\endcsname\fi%
+%       \strut\insertframetitle
+%       % ajout le 16/01/2009
+%       \ifnum\sobre@subtotalframenumber=1\else
+%       ~(\the\sobre@subframenumber/\the\sobre@subtotalframenumber)
+%       \fi
+%       \strut\par%
+%       {%
+%         \ifx\insertframesubtitle\@empty%
+%         \else%
+%         {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+%         \fi
+%       }%
+%       \vskip-1ex%
+%       \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+%   \end{beamercolorbox}%
+% }
+
+% \setbeamertemplate{headline}[texte]
+% \setbeamertemplate{frametitle}[texte]
+% \setbeamertemplate{mini frames}[default]
+%>>
+
+\usepackage[utf8]    {inputenc}
+\usepackage[T1]      {fontenc}
+\usepackage[english] {babel}
+
+\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{beamersobre}
+
+
+\title
+  [Short Title\hspace{2em}]
+  {Full Title of the Presentation}
+
+\author
+  [Bruce Wayne]
+  {Bruce Wayne\quad Clark Kent\\Peter Parker\quad Alan Scot}
+
+\date
+  {April 01, 2011}
+
+\institute
+  {Justice League of America}
+
+
+\begin{document}
+
+\maketitle
+
+\section
+  {Introduction}
+
+\begin{frame}
+  {Introduction}
+
+  Things in a Bulleted List\pause
+
+  \begin{itemize}
+  \item Bullets that\pause
+  \item Come up\pause
+  \item One by one
+  \end{itemize}
+\end{frame}
+
+
+
+\section
+  {Main Body}
+
+\begin{frame}
+  {Equations}
+
+  Equations are easy
+  \begin{itemize}
+  \item Just copy/paste equations\pause
+  \item From the paper!
+    \begin{equation*}
+      \textbf{p}^* = \underset{\textbf{p}}{\arg\!\min}~\sum_{\textbf{x}}\left[ I(\textbf{W}(\textbf{x};\textbf{p})) - T(\textbf{x}) \right]^2
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  {Pictures}
+
+  \begin{figure}[t]
+    \centering
+    \includegraphics[height=\dimexpr11\textheight/16\relax]{ducks}
+    \caption{Kissing ducks}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  {A Movie}
+
+  \begin{block}{Some block}
+    \begin{itemize}
+    \item Movies only seem to work in Adobe Reader
+    \item Movie file is not embedded, it must be on the computer
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Some more block}
+    Movies only seem to work in Adobe Reader\par
+    Movie file is not embedded, it must be on the computer
+  \end{exampleblock}
+
+  \begin{alertblock}{}
+    Some text in here.
+    \begin{itemize}
+    \item Movies only seem to work in Adobe Reader
+    \item Movie file is not embedded, it must be on the computer
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+
+
+\section
+  {Conclusion}
+
+\begin{frame}
+  {Credits}
+
+  \begin{itemize}
+  \item Brought to you by Cédric Mauclair
+  \item Please let me know about improvements!
+  \item inspiration: \url{http://www.shawnlankton.com}... (in code)
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  {Questions}
+
+  \nocite{lorem,ipsum}
+  \bibliographystyle{plain}
+  \bibliography{demo}
+
+\end{frame}
+
+\end{document}
+

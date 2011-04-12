@@ -1,0 +1,158 @@
+\ProvidesPackage{beamersobre}[2011/04/11 Beamer theme.]
+
+\RequirePackage{calc, xifthen, pgfpages, tikz}
+
+\usebeamerfont{normal text}
+\setbox0=\hbox{\strut}
+\newlength\strutht \strutht\ht0
+\newlength\strutdp \strutdp\dp0
+
+\def\num(#1){\numexpr#1\relax}
+\def\dim(#1){\dimexpr#1\relax}
+
+
+\setbeamersize{text margin left=5mm, text margin right=5mm}
+
+\usebackgroundtemplate{%
+  \begin{tikzpicture}
+    \path [clip]       (0,0) rectangle (\paperwidth,\paperheight);
+    \path [fill=white] (0,0) rectangle (\paperwidth,\paperheight);
+    \path [fill=tuegray]
+      (0,5mm) rectangle (\paperwidth,\paperheight-13.3mm);
+    \path [fill=black, line width=.4mm]
+      (0,5mm)                 rectangle ++(\paperwidth,0.4mm)
+      (0,\paperheight-13.3mm) rectangle ++(\paperwidth,0.4mm);
+    \node [text=black, font=\fontfamily{zlo}\fontsize{8}{9.5pt}\selectfont]
+      at (\paperwidth/2,2.2mm) {\dept};
+    \node [anchor=south east, inner sep=0pt]
+      at (\paperwidth-1mm,\paperheight-12mm) {\insertlogo};
+    \usebeamercolor{footline}
+    \node [anchor=east, text=fg, font=\usebeamerfont{footline}, inner sep=0pt]
+      at (\paperwidth-1mm,2.2mm) {\insertframenumber/\inserttotalframenumber};
+    \path [draw=black] (0,0) rectangle (\paperwidth,\paperheight);
+  \end{tikzpicture}}
+
+
+%<< ~~[· side bar     ·]~~ >>
+
+\userightsidebartemplate{0pt}{}% gets rid of the lower logo
+
+%>>
+%<< ~~[· headline     ·]~~ >>
+
+\setbeamertemplate{headline}{\vskip1.3cm}
+
+%>>
+%<< ~~[· itemize      ·]~~ >>
+
+\useitemizeitemtemplate{%
+  \raise1.5pt\hbox{%
+    \usebeamerfont{itemize item}%
+    \usebeamercolor[fg]{itemize item}$\blacktriangleright$}}
+\setbeamertemplate{itemize subitem}{%
+  \raise1.5pt\hbox{%
+    \usebeamerfont{itemize subitem}%
+    \usebeamercolor[fg]{itemize subitem}\textbullet}}
+\setbeamertemplate{itemize subsubitem}{%
+  \raise1.5pt\hbox{%
+    \usebeamerfont{itemize subsubitem}%
+    \usebeamercolor[fg]{itemize subsubitem}\textbullet}}
+
+%>>
+%<< ~~[· bibliography ·]~~ >>
+
+\setbeamertemplate{bibliography item}{%
+  \begin{tikzpicture}[rounded corners=1pt, x=9mm, y=9mm]
+    \useasboundingbox (0, 0.2) rectangle (0.5, 0.7);
+    \path [fill=bg!85!blue]
+      (0, 0.25) rectangle (0.4, 0.5);
+    \path [shade, bottom color=bg, top color=bg!85!blue]
+      (0, 0) -- (0.3, 0) -- (0.4, 0.12) -- (0.4, 0.3) -- (0, 0.3) -- cycle;
+    \path [shade, left color=bg, right color=bg!85!blue]
+      (0,0.27) .. controls (0.25,0.25) .. (0.4,0.5) -- (0,0.5) -- cycle;
+    \path [fill=bg!90!blue]
+      (0,0) rectangle (0.3,0.05);
+    \path [shade, left color=bg!95!blue, right color=bg!90!blue]
+      (0,0) rectangle (0.05,0.5);
+    \path [shade, left color=bg,right color=bg!80!black, shading angle=45]
+      (0.3,0) -- (0.3,0.12) -- (0.4,0.12) -- cycle;
+    \path [draw=fg!35!bg]
+      (0,0) -- (0.3,0) -- (0.4,0.12) -- (0.4,0.5) -- (0,0.5) -- cycle;
+    \path [draw=fg!35!bg]
+      (0.3,0) -- (0.3,0.12) -- (0.4,0.12);
+  \end{tikzpicture}}
+
+%>>
+%<< ~~[· blocks       ·]~~ >>
+
+\newcommand\defblock[1][]{%
+  \edef\doit{%
+    \noexpand\dodefblock
+    {block \ifx#1\@empty\else#1\space\fi begin}
+    {block \ifx#1\@empty\else#1\space\fi end}
+    {block title\ifx#1\@empty\else\space#1\fi}
+    {block body\ifx#1\@empty\else\space#1\fi}}
+  \doit}
+
+\def\dodefblock#1#2#3#4{%
+  \setbeamertemplate{#1}{%
+    \@tempdima=\dim(\textwidth-2\beamer@leftmargin-2\beamer@rightmargin)
+    \hbox to \textwidth\bgroup\hfil
+      \begin{beamerboxesrounded}
+        [upper=#3, lower=#4, width=\@tempdima]
+        {\usebeamerfont{#3}\insertblocktitle}
+        \usebeamerfont{#4}}
+  \setbeamertemplate{#2}{%
+      \end{beamerboxesrounded}%
+    \hfil\egroup\vskip1ex}}
+
+%>>
+
+\defblock
+\defblock[example]
+\defblock[alerted]
+
+%<< ~~[· macros     ·]~~ >>
+
+\let\bibliographyorig\bibliography
+\def\bibliography#1{%
+  \begin{center}
+    \begin{tikzpicture}
+      \usebeamercolor{bibliography structure}
+      \node [draw=fg!30!bg, fill=bg, rounded corners=2pt]
+        {\parbox{0.95\textwidth}{\bibliographyorig{#1}\vskip2mm}};
+    \end{tikzpicture}
+  \end{center}}
+
+\def\sobrerulethickness{\setlength\sobre@rulethickness}
+
+%>>
+%<< ~~[· fonts      ·]~~ >>
+
+\setbeamerfont{itemize item}{size=\tiny}
+\setbeamerfont{itemize subitem}{parent=itemize item}
+\setbeamerfont{itemize subsubitem}{parent=itemize subitem}
+
+\usefonttheme[stillsansserifsmall,stillsansseriflarge]{serif}
+
+% \renewcommand{\rmdefault}{zsc}
+\renewcommand{\sfdefault}{zmb}
+\renewcommand{\ttdefault}{pcr}
+
+%>>
+%<< ~~[· colors     ·]~~ >>
+
+\definecolor{tuedarkblue}{rgb}{0.0745,0.02745,0.41176}
+\definecolor{tuelightblue}{rgb}{0.356863,0.45098,0.545098}
+\definecolor{tuegray}{rgb}{0.84,0.88235,0.898}
+\definecolor{tuegrey}{rgb}{0.84,0.88235,0.898}
+\definecolor{bibstruct}{rgb}{.95,.95,.85}
+
+\setbeamercolor{bibliography structure}{fg=normal text.fg, bg=bibstruct}
+
+%>>
+
+
+%%% Local Variables:
+%%% TeX-master: "./beamer-sample.tex"
+%%% End:
