@@ -1,0 +1,3 @@
+[submodule "beamer-progressbar"]
+	path = beamer-progressbar
+	url = git://github.com/cedricmauclair/beamer-progressbar.git
